@@ -1,18 +1,42 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <section class="home">
+    <div class="home__btns">
+      <router-link to="/options" class="btn btn-size--default btn-point-bg"
+        >타이머 시작하기</router-link
+      >
+      <router-link to="/" class="btn btn-size--default btn-point-bg"
+        >링크2</router-link
+      >
+    </div>
+  </section>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
-  name: "Home",
-  components: {
-    HelloWorld,
-  },
+  name: 'Home',
 };
 </script>
+
+<style lang="scss">
+.home {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+
+  &__btns {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    .btn {
+      font-weight: $font-medium;
+
+      &:first-child {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+</style>

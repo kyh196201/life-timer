@@ -1,0 +1,51 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
+
+  &-point {
+    border-color: $main-color;
+    color: $dark-gray;
+  }
+
+  &-point-bg {
+    background-color: $main-color;
+    color: $white;
+  }
+
+  &-gray {
+    border-color: $main-gray-color;
+    color: $main-gray-color;
+  }
+
+  &-light-gray {
+    border-color: $light-gray;
+    color: $dark-gray;
+  }
+
+  &-size--default {
+    height: 4rem;
+    min-width: 6.4rem;
+    padding: 0 1.6rem;
+    border-radius: 0.25rem;
+    border-width: 0.1rem;
+    border-style: solid;
+    font-size: 1.6rem;
+  }
+
+  &-size--large {
+    height: 4.5rem;
+    min-width: 7rem;
+    padding: 0 1.6rem;
+    border-radius: 0.25rem;
+    border-width: 0.15rem;
+    border-style: solid;
+    font-size: 1.8rem;
+  }
+
+  &:disabled {
+    background-color: $light-gray !important;
+    color: $white !important;
+  }
+}

@@ -1,0 +1,28 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+#app {
+  position: relative;
+  font-family: $main-font;
+  font-size: 1.6rem;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  padding: 10rem 2rem 2rem;
+}
+
+.page-title {
+  color: $main-gray-color;
+  font-weight: $font-semi-bold;
+  font-size: 3.5rem;
+}
