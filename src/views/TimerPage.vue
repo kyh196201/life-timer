@@ -18,7 +18,7 @@
         type="button"
         class="btn btn-point-bg btn-size--default"
         :disabled="!isTimerEnd"
-        @click.stop="exit"
+        @click.stop="handleExit"
       >
         나가기
       </button>
@@ -28,6 +28,13 @@
 
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex';
+import TimerWorker from 'worker-loader!../scripts/worker.js';
+
+let timerWorker = null;
+
+if (window.Worker) {
+  timerWorker = new TimerWorker();
+}
 
 export default {
   name: 'timer-page',
@@ -41,6 +48,8 @@ export default {
         threshold: 500,
       },
 
+      MINUS_PER_FRAME: 500,
+
       originTime: null,
     };
   },
@@ -48,6 +57,9 @@ export default {
   computed: {
     ...mapState(['endMinutes']),
 
+    /**
+     * @returns {string} '00' 분
+     */
     minutes() {
       if (this.originTime <= 0) return '00';
 
@@ -56,6 +68,9 @@ export default {
       return this.formatTime(minutes);
     },
 
+    /**
+     * @returns {string} '00' 초
+     */
     seconds() {
       if (this.originTime <= 0) return '00';
 
@@ -64,8 +79,11 @@ export default {
       return this.formatTime(seconds);
     },
 
+    /**
+     * @returns {boolean} timer 종료 여부
+     */
     isTimerEnd() {
-      return this.rafId && this.originTime <= 0;
+      return this.originTime <= 0;
     },
   },
 
@@ -74,9 +92,7 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-      this.rafId = window.requestAnimationFrame(this.animateTime);
-    }, 500);
+    this.initWebWorker();
   },
 
   methods: {
@@ -87,6 +103,31 @@ export default {
       return value < 10 ? `0${value}` : '' + value;
     },
 
+    // 웹 워커 초기화
+    initWebWorker() {
+      if (!timerWorker) return;
+
+      timerWorker.onmessage = event => {
+        if (event.data === 'tick') {
+          const newTime = this.originTime - this.MINUS_PER_FRAME;
+
+          this.originTime = Math.max(0, newTime);
+
+          if (this.originTime > 0) {
+            timerWorker.postMessage('start');
+          } else {
+            this.complete();
+            timerWorker.postMessage('stop');
+          }
+        }
+      };
+
+      setTimeout(() => {
+        timerWorker.postMessage('start');
+      }, this.MINUS_PER_FRAME);
+    },
+
+    // FIXME 삭제
     animateTime(now = 0) {
       const {start, threshold} = this.time;
 
@@ -112,6 +153,7 @@ export default {
     },
 
     complete() {
+      // FIXME 모달로 변경
       alert('성공 !!!');
     },
 
@@ -123,11 +165,11 @@ export default {
       this.setOriginTime();
 
       this.$nextTick(() => {
-        this.rafId = window.requestAnimationFrame(this.animateTime);
+        timerWorker.postMessage('start');
       });
     },
 
-    async exit() {
+    handleExit() {
       this.$router.push({
         name: 'Home',
       });

@@ -28,7 +28,8 @@
     "node-sass": "^4.12.0",
     "prettier": "^2.3.2",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "worker-loader": "^3.0.8"
   },
   "eslintConfig": {
     "root": true,

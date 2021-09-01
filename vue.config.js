@@ -4,6 +4,19 @@ module.exports = {
     overlay: false,
   },
 
+  configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.worker\.js$/,
+          use: {
+            loader: 'worker-loader',
+          },
+        },
+      ],
+    },
+  },
+
   css: {
     loaderOptions: {
       sass: {
