@@ -26,7 +26,13 @@
 </template>
 
 <script>
+// Utils
+import {formatTime} from '@/utils/date';
+
+// Vuex
 import {mapState, mapMutations, mapActions} from 'vuex';
+
+// Web Worker
 import TimerWorker from 'worker-loader!../scripts/worker.js';
 
 let timerWorker = null;
@@ -64,7 +70,7 @@ export default {
 
       const minutes = Math.floor(this.originTime / 1000 / 60);
 
-      return this.formatTime(minutes);
+      return formatTime(minutes);
     },
 
     /**
@@ -75,7 +81,7 @@ export default {
 
       const seconds = Math.floor((this.originTime / 1000) % 60);
 
-      return this.formatTime(seconds);
+      return formatTime(seconds);
     },
 
     /**
@@ -97,10 +103,6 @@ export default {
   methods: {
     ...mapActions(['clearOptions']),
     ...mapMutations(['setEndMinutes']),
-
-    formatTime(value) {
-      return value < 10 ? `0${value}` : '' + value;
-    },
 
     // 웹 워커 초기화
     initWebWorker() {
