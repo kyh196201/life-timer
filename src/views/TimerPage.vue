@@ -35,12 +35,6 @@ import {mapState, mapMutations, mapActions} from 'vuex';
 // Web Worker
 import TimerWorker from 'worker-loader!../scripts/worker.js';
 
-let timerWorker = null;
-
-if (window.Worker) {
-  timerWorker = new TimerWorker();
-}
-
 export default {
   name: 'timer-page',
 
@@ -56,6 +50,8 @@ export default {
       MINUS_PER_FRAME: 500,
 
       originTime: null,
+
+      timerWorker: null,
     };
   },
 
@@ -106,25 +102,27 @@ export default {
 
     // 웹 워커 초기화
     initWebWorker() {
-      if (!timerWorker) return;
+      if (!this.timerWorker) {
+        this.timerWorker = new TimerWorker();
+      }
 
-      timerWorker.onmessage = event => {
+      this.timerWorker.onmessage = event => {
         if (event.data === 'tick') {
           const newTime = this.originTime - this.MINUS_PER_FRAME;
 
           this.originTime = Math.max(0, newTime);
 
           if (this.originTime > 0) {
-            timerWorker.postMessage('start');
+            this.timerWorker.postMessage('start');
           } else {
             this.complete();
-            timerWorker.postMessage('stop');
+            this.timerWorker.postMessage('stop');
           }
         }
       };
 
       setTimeout(() => {
-        timerWorker.postMessage('start');
+        this.timerWorker.postMessage('start');
       }, this.MINUS_PER_FRAME);
     },
 
@@ -171,7 +169,7 @@ export default {
       this.setOriginTime();
 
       this.$nextTick(() => {
-        timerWorker.postMessage('start');
+        this.timerWorker.postMessage('start');
       });
     },
 
@@ -180,6 +178,7 @@ export default {
         name: 'Home',
       });
 
+      this.timerWorker.terminate();
       this.clearOptions();
     },
   },
