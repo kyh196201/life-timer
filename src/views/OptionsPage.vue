@@ -36,15 +36,7 @@
       </div>
       <div class="form-row" :class="{error: errors.endMinutes}" v-else>
         <label for="end-time" class="form-label">종료 시간 설정</label>
-        <input
-          type="text"
-          id="end-time"
-          class="form-control"
-          placeholder="-- min"
-          autocomplete="off"
-          :value="endMinutes"
-          @input="updateTime"
-        />
+        <TimePicker />
         <p class="form-error" v-if="errors.endMinutes">
           {{ errors.endMinutes }}
         </p>
@@ -72,8 +64,15 @@ import {MINUTE_MODE, DATE_MODE} from '@/configs/constants';
 // Vuex
 import {mapState, mapMutations} from 'vuex';
 
+// Component
+import TimePicker from '@/components/TimePicker.vue';
+
 export default {
   name: 'options-page',
+
+  components: {
+    TimePicker,
+  },
 
   data() {
     return {
