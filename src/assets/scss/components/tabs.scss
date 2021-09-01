@@ -1,0 +1,38 @@
+.tab {
+  display: flex;
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: $tab-font-weight;
+  border-width: 0.1rem;
+  border-style: solid;
+
+  &-size--default {
+    min-width: $tab-default-min-width;
+    height: $tab-default-height;
+    padding: 0 $tab-default-padding;
+    font-size: $tab-default-font-size;
+  }
+
+  &-point {
+    color: $main-color;
+    background: $white;
+    border-color: $main-color;
+
+    &.active {
+      background-color: $main-color;
+      color: $white;
+    }
+  }
+
+  &.active {
+    font-weight: $font-semi-bold;
+  }
+
+  &__title {
+    line-height: 1;
+  }
+}

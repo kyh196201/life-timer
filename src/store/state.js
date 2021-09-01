@@ -1,5 +1,7 @@
+import {MINUTE_MODE} from '@/configs/constants';
+
 export default {
-  mode: 'minute', // 'time',
+  mode: MINUTE_MODE, // 'time',
 
   endTime: '',
 

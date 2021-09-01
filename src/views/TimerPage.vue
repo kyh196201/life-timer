@@ -17,7 +17,6 @@
       <button
         type="button"
         class="btn btn-point-bg btn-size--default"
-        :disabled="!isTimerEnd"
         @click.stop="handleExit"
       >
         나가기

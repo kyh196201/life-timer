@@ -1,9 +1,41 @@
 <template>
   <section class="options-page">
     <h1 class="page-title">시간 설정</h1>
+    <div class="tab">
+      <div
+        class="tab-item tab-item-size--default tab-item-point"
+        :class="{active: tab.value === mode}"
+        :key="index"
+        @click.stop="handleChangeTab(tab.value)"
+        v-for="(tab, index) in tabs"
+      >
+        <span class="tab-item__title">
+          {{ tab.title }}
+        </span>
+      </div>
+    </div>
     <form @submit.prevent="handleSubmit">
-      <div class="form-row" :class="{error: errors.endMinutes}">
-        <label for="end-time" class="form-label">종료 시간</label>
+      <div
+        class="form-row"
+        :class="{error: errors.endMinutes}"
+        v-if="mode === 'minute'"
+      >
+        <label for="end-time" class="form-label">타이머 설정</label>
+        <input
+          type="text"
+          id="end-time"
+          class="form-control"
+          placeholder="--분"
+          autocomplete="off"
+          :value="endMinutes"
+          @input="updateTime"
+        />
+        <p class="form-error" v-if="errors.endMinutes">
+          {{ errors.endMinutes }}
+        </p>
+      </div>
+      <div class="form-row" :class="{error: errors.endMinutes}" v-else>
+        <label for="end-time" class="form-label">종료 시간 설정</label>
         <input
           type="text"
           id="end-time"
@@ -34,6 +66,10 @@
 </template>
 
 <script>
+// Config
+import {MINUTE_MODE, DATE_MODE} from '@/configs/constants';
+
+// Vuex
 import {mapState, mapMutations} from 'vuex';
 
 export default {
@@ -42,15 +78,26 @@ export default {
   data() {
     return {
       errors: {},
+
+      tabs: [
+        {
+          value: MINUTE_MODE,
+          title: '타이머',
+        },
+        {
+          value: DATE_MODE,
+          title: '종료 시간',
+        },
+      ],
     };
   },
 
   computed: {
-    ...mapState(['endMinutes']),
+    ...mapState(['endMinutes', 'mode']),
   },
 
   methods: {
-    ...mapMutations(['setEndMinutes']),
+    ...mapMutations(['setEndMinutes', 'setMode']),
 
     updateTime(e) {
       this.setEndMinutes(e.target.value.trim());
@@ -64,7 +111,13 @@ export default {
       });
     },
 
-    validateForm() {
+    handleChangeTab(tab) {
+      if (this.mode === tab) return;
+
+      this.setMode(tab);
+    },
+
+    validateMinutes() {
       let valid = true;
 
       const endMinutes = this.endMinutes;
@@ -84,6 +137,16 @@ export default {
 
       return valid;
     },
+
+    validateDate() {
+      return true;
+    },
+
+    validateForm() {
+      return this.mode === MINUTE_MODE
+        ? this.validateMinutes()
+        : this.validateDate();
+    },
   },
 };
 </script>
@@ -94,9 +157,13 @@ export default {
   flex-direction: column;
   width: 100%;
 
+  .tab {
+    margin-top: 3rem;
+  }
+
   form {
     width: 100%;
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
 
   .form-row {
