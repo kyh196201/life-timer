@@ -153,8 +153,13 @@ export default {
     },
 
     complete() {
-      // FIXME 모달로 변경
-      alert('성공 !!!');
+      const routerInstance = this.$router.resolve({
+        name: 'Alarm',
+      });
+
+      if (routerInstance.href) {
+        window.open(routerInstance.href, '_blank');
+      }
     },
 
     setOriginTime() {

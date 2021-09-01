@@ -4,9 +4,9 @@
       <router-link to="/options" class="btn btn-size--default btn-point-bg"
         >타이머 시작하기</router-link
       >
-      <router-link to="/" class="btn btn-size--default btn-point-bg"
+      <!-- <router-link to="/" class="btn btn-size--default btn-point-bg"
         >링크2</router-link
-      >
+      > -->
     </div>
   </section>
 </template>

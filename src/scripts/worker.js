@@ -1,6 +1,4 @@
 self.onmessage = event => {
-  console.log('web worker event data', event.data);
-
   let timer = null;
   const delay = 500;
 

@@ -11,13 +11,18 @@ const routes = [
   },
   {
     path: '/options',
-    name: 'options',
+    name: 'Options',
     component: () => import('@/views/OptionsPage.vue'),
   },
   {
     path: '/timer',
-    name: 'timer',
+    name: 'Timer',
     component: () => import('@/views/TimerPage.vue'),
+  },
+  {
+    path: '/alarm',
+    name: 'Alarm',
+    component: () => import('@/views/AlarmPage.vue'),
   },
 ];
 

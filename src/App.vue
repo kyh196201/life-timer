@@ -19,7 +19,9 @@ export default {
 
   computed: {
     showHeader() {
-      return this.$route.name !== 'timer';
+      const hideHeaderRouters = ['Timer', 'Alarm'];
+
+      return !hideHeaderRouters.includes(this.$route.name);
     },
   },
 };

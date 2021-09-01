@@ -60,7 +60,7 @@ export default {
       if (!this.validateForm()) return false;
 
       this.$router.push({
-        name: 'timer',
+        name: 'Timer',
       });
     },
 
