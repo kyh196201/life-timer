@@ -6,8 +6,4 @@ export default {
   setEndTime(state, time) {
     state.endTime = time;
   },
-
-  setMode(state, mode) {
-    state.mode = mode;
-  },
 };

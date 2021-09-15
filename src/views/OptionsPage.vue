@@ -1,25 +1,8 @@
 <template>
   <section class="options-page">
     <h1 class="page-title">시간 설정</h1>
-    <div class="tab">
-      <div
-        class="tab-item tab-item-size--default tab-item-point"
-        :class="{active: tab.value === mode}"
-        :key="index"
-        @click.stop="handleChangeTab(tab.value)"
-        v-for="(tab, index) in tabs"
-      >
-        <span class="tab-item__title">
-          {{ tab.title }}
-        </span>
-      </div>
-    </div>
     <form @submit.prevent="handleSubmit">
-      <div
-        class="form-row"
-        :class="{error: errors.endMinutes}"
-        v-if="mode === 'minute'"
-      >
+      <div class="form-row" :class="{error: errors.endMinutes}">
         <label for="end-time" class="form-label">타이머 설정</label>
         <input
           type="text"
@@ -30,13 +13,6 @@
           :value="endMinutes"
           @input="updateTime"
         />
-        <p class="form-error" v-if="errors.endMinutes">
-          {{ errors.endMinutes }}
-        </p>
-      </div>
-      <div class="form-row" :class="{error: errors.endMinutes}" v-else>
-        <label for="end-time" class="form-label">종료 시간 설정</label>
-        <TimePicker />
         <p class="form-error" v-if="errors.endMinutes">
           {{ errors.endMinutes }}
         </p>
@@ -58,36 +34,15 @@
 </template>
 
 <script>
-// Config
-import {MINUTE_MODE, DATE_MODE} from '@/configs/constants';
-
 // Vuex
 import {mapState, mapMutations} from 'vuex';
-
-// Component
-import TimePicker from '@/components/TimePicker.vue';
 
 export default {
   name: 'options-page',
 
-  components: {
-    TimePicker,
-  },
-
   data() {
     return {
       errors: {},
-
-      tabs: [
-        {
-          value: MINUTE_MODE,
-          title: '타이머',
-        },
-        {
-          value: DATE_MODE,
-          title: '종료 시간',
-        },
-      ],
     };
   },
 
@@ -137,14 +92,8 @@ export default {
       return valid;
     },
 
-    validateDate() {
-      return true;
-    },
-
     validateForm() {
-      return this.mode === MINUTE_MODE
-        ? this.validateMinutes()
-        : this.validateDate();
+      return this.validateMinutes();
     },
   },
 };
