@@ -36,7 +36,8 @@
     color: $form-control-placeholder;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     border-color: $main-color;
     border-width: 0.125rem;
   }

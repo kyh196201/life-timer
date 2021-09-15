@@ -175,7 +175,7 @@ export default {
 
     handleExit() {
       this.$router.push({
-        name: 'Home',
+        name: 'Options',
       });
 
       this.timerWorker.terminate();

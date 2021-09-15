@@ -7,6 +7,7 @@
         <input
           type="text"
           id="end-time"
+          ref="end-time"
           class="form-control"
           placeholder="--분"
           autocomplete="off"
@@ -48,6 +49,10 @@ export default {
 
   computed: {
     ...mapState(['endMinutes', 'mode']),
+  },
+
+  mounted() {
+    this.$refs['end-time']?.focus();
   },
 
   methods: {
