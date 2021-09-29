@@ -1,4 +1,7 @@
 module.exports = {
+  publicPath: '/life-timer/',
+  outputDir: './docs',
+
   devServer: {
     open: true,
     overlay: false,
