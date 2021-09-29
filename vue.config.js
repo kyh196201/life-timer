@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/life-timer/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/life-timer/' : '/',
   outputDir: './docs',
 
   devServer: {
