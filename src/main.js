@@ -13,7 +13,7 @@ const path = localStorage.getItem('path');
 if (path) {
   localStorage.removeItem('path');
   router.push({
-    path,
+    path: '/',
   });
 }
 
