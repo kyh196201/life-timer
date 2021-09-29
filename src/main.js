@@ -8,6 +8,15 @@ import '@/assets/scss/_common.scss';
 
 Vue.config.productionTip = false;
 
+const path = localStorage.getItem('path');
+
+if (path) {
+  localStorage.removeItem('path');
+  router.push({
+    path,
+  });
+}
+
 new Vue({
   router,
   store,
