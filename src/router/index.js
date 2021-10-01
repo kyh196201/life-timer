@@ -1,6 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+// Store
+import store from '@/store';
+
+console.log('store', store);
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,6 +23,17 @@ const routes = [
     path: '/timer',
     name: 'Timer',
     component: () => import('@/views/TimerPage.vue'),
+    beforeEnter: (to, from, next) => {
+      const isEndMinutes = !!store.getters.getEndMinutes;
+
+      if (isEndMinutes) {
+        next();
+      } else {
+        next({
+          name: 'Home',
+        });
+      }
+    },
   },
   {
     path: '/alarm',
