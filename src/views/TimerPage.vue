@@ -17,6 +17,22 @@
       <button
         type="button"
         class="btn btn-point-bg btn-size--default"
+        @click.stop="pause"
+        v-if="!isPaused"
+      >
+        일시 정지
+      </button>
+      <button
+        type="button"
+        class="btn btn-point-bg btn-size--default"
+        @click.stop="resume"
+        v-if="isPaused"
+      >
+        재시작
+      </button>
+      <button
+        type="button"
+        class="btn btn-point-bg btn-size--default"
         @click.stop="handleExit"
       >
         나가기
@@ -46,6 +62,9 @@ export default {
         start: 0,
         threshold: 500,
       },
+
+      // completed, running, paused
+      status: '',
 
       MINUS_PER_FRAME: 500,
 
@@ -86,6 +105,13 @@ export default {
     isTimerEnd() {
       return this.originTime <= 0;
     },
+
+    /**
+     * @returns {boolean} timer 일시 정지 여부
+     */
+    isPaused() {
+      return !this.isTimerEnd && this.status === 'paused';
+    },
   },
 
   created() {
@@ -108,20 +134,27 @@ export default {
 
       this.timerWorker.onmessage = event => {
         if (event.data === 'tick') {
+          if (this.isPaused) {
+            return;
+          }
+
           const newTime = this.originTime - this.MINUS_PER_FRAME;
 
           this.originTime = Math.max(0, newTime);
 
           if (this.originTime > 0) {
+            this.status = 'running';
             this.timerWorker.postMessage('start');
           } else {
             this.complete();
+            this.status = 'completed';
             this.timerWorker.postMessage('stop');
           }
         }
       };
 
       setTimeout(() => {
+        this.status = 'running';
         this.timerWorker.postMessage('start');
       }, this.MINUS_PER_FRAME);
     },
@@ -165,14 +198,17 @@ export default {
       this.originTime = parseInt(this.endMinutes) * 60 * 1000;
     },
 
+    // 재도전
     retry() {
       this.setOriginTime();
 
       this.$nextTick(() => {
+        this.status = 'running';
         this.timerWorker.postMessage('start');
       });
     },
 
+    // 나가기
     handleExit() {
       this.$router.push({
         name: 'Options',
@@ -180,6 +216,18 @@ export default {
 
       this.timerWorker.terminate();
       this.clearOptions();
+    },
+
+    // 일시 정지
+    pause() {
+      this.timerWorker.postMessage('stop');
+      this.status = 'paused';
+    },
+
+    // 재시작
+    resume() {
+      this.timerWorker.postMessage('start');
+      this.status = 'running';
     },
   },
 };
